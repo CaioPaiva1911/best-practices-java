@@ -1,12 +1,12 @@
 package br.com.alura.service;
 
 import br.com.alura.client.ClientHttpConfiguration;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import br.com.alura.domain.Abrigo;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.util.List;
 import java.util.Scanner;
 
 public class AbrigoService {
@@ -25,13 +25,10 @@ public class AbrigoService {
         System.out.println("Digite o email do abrigo:");
         String email = new Scanner(System.in).nextLine();
 
-        JsonObject json = new JsonObject();
-        json.addProperty("nome", nome);
-        json.addProperty("telefone", telefone);
-        json.addProperty("email", email);
+        Abrigo abrigo = new Abrigo(nome, telefone, email);
 
         String uri = "http://localhost:8080/abrigos";
-        HttpResponse<String> response = client.dispararRequisicaoGet(uri);
+        HttpResponse<String> response = client.dispararRequisicaoPost(uri, abrigo);
         int statusCode = response.statusCode();
         String responseBody = response.body();
         if (statusCode == 200) {
@@ -47,14 +44,15 @@ public class AbrigoService {
         String uri = "http://localhost:8080/abrigos";
         HttpResponse<String> response = client.dispararRequisicaoGet(uri);
         String responseBody = response.body();
-        JsonArray jsonArray = JsonParser.parseString(responseBody).getAsJsonArray();
+
+        List<Abrigo> abrigoList = List.of(new ObjectMapper().readValue(responseBody, Abrigo[].class));
+
         System.out.println("Abrigos cadastrados:");
 
-        jsonArray.forEach(element -> {
-            JsonObject jsonObject = element.getAsJsonObject();
-            long id = jsonObject.get("id").getAsLong();
-            String nome = jsonObject.get("nome").getAsString();
-            System.out.printf("%s - %s", id, nome);
+        abrigoList.forEach(abrigo -> {
+            long id = abrigo.getId();
+            String nome = abrigo.getNome();
+            System.out.printf("%s - %s ", id, nome);
         });
     }
 }
