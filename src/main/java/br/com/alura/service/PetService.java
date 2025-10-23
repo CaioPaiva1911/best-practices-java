@@ -42,17 +42,18 @@ public class PetService {
             String nome = pet.getNome();
             String raca = pet.getRaca();
             int idade = pet.getIdade();
-            System.out.printf("%d - %s - %s - %s - %s ano(s) \n", id, tipo, nome, raca, idade);
 
+            System.out.printf("%d - %s - %s - %s - %s ano(s) \n", id, tipo, nome, raca, idade);
         });
     }
 
     public void importarPets() throws IOException, InterruptedException {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Digite o id ou nome do abrigo:");
-        String idOuNome = new Scanner(System.in).nextLine();
+        String idOuNome = scanner.nextLine();
 
         System.out.println("Digite o nome do arquivo CSV:");
-        String nomeArquivo = new Scanner(System.in).nextLine();
+        String nomeArquivo = scanner.nextLine();
 
         BufferedReader reader;
         try {
