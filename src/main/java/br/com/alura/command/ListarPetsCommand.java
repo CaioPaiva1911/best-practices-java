@@ -11,6 +11,7 @@ public class ListarPetsCommand implements Command {
         try {
             ClientHttpConfiguration client = new ClientHttpConfiguration();
             PetService petService = new PetService(client);
+
             petService.listarPets();
         } catch (IOException | InterruptedException e) {
             System.out.println(e.getMessage());

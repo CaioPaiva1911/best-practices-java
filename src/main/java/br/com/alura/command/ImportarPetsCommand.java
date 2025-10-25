@@ -11,6 +11,7 @@ public class ImportarPetsCommand implements Command {
         try {
             ClientHttpConfiguration client = new ClientHttpConfiguration();
             PetService petService = new PetService(client);
+
             petService.importarPets();
         } catch (IOException | InterruptedException e) {
 
